@@ -1,5 +1,7 @@
 package unicore.config;
 
+import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
+import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -33,12 +35,13 @@ public class DataSourceConfig {
     /** 1. HikariCP 기반 DataSource */
     @Bean
     public DataSource dataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(driverClassName);
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-        return new HikariDataSource(config);
+        HikariConfig cfg = new HikariConfig();
+        cfg.setDriverClassName(driverClassName);
+        cfg.setJdbcUrl(url);
+        cfg.setUsername(username);
+        cfg.setPassword(password);
+
+        return new HikariDataSource(cfg);
     }
 
     /** 2. MyBatis용 SqlSessionFactory */
@@ -46,17 +49,18 @@ public class DataSourceConfig {
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
+
+        //mybatis-config.xml 등록
+        factoryBean.setConfigLocation(
+                new PathMatchingResourcePatternResolver()
+                        .getResource("classpath:mybatis-config.xml")
+        );
+
         // mapper XML 파일 경로 지정
         factoryBean.setMapperLocations(
                 new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/*.xml")
         );
         return factoryBean.getObject();
     }
-
-    /** 3. SqlSessionTemplate 등록 (선택: 필요시 직접 사용 가능) */
-    /*@Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
-        return new SqlSessionTemplate(sqlSessionFactory);
-    }*/
 
 }

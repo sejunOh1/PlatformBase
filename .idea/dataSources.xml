@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="postgres@opzudb" uuid="bccba657-5cc2-4168-bfd8-ac42026b16ac">
-      <driver-ref>postgresql</driver-ref>
+    <data-source source="LOCAL" name="tibero@221.148.221.129" uuid="84b2f4e9-b56d-4921-8be0-377a85ef1240">
+      <driver-ref>tibero</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://221.148.221.129:6678/postgres</jdbc-url>
+      <jdbc-driver>com.tmax.tibero.jdbc.TbDriver</jdbc-driver>
+      <jdbc-url>jdbc:tibero:thin:@221.148.221.129:1486:tibero</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

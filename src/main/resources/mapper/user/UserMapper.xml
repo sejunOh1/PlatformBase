@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="unicore.user.mapper.UserMapper">
+
+    <select id="findByUsername" parameterType="String" resultType="unicore.user.model.User">
+        SELECT USER_ID   AS username,
+               USER_PSWD AS password,
+               AUTHRT_ID AS role
+          FROM COMMON.PT_USER_INFO_M
+         WHERE USER_ID = #{username}
+    </select>
+
+</mapper>
