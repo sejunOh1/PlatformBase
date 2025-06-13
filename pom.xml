@@ -82,11 +82,10 @@
             <version>5.3.33</version>
         </dependency>
 
-        <!-- PostgreSQL JDBC Driver -->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.6.0</version>
+            <groupId>com.tmax.tibero</groupId>
+            <artifactId>tibero-jdbc</artifactId>
+            <version>7.0</version>
         </dependency>
 
         <!-- HikariCP 커넥션 풀 -->
@@ -113,6 +112,26 @@
             <artifactId>lombok</artifactId>
             <version>1.18.38</version> <!-- 최신 버전 확인 권장 -->
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Security Core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.8.5</version> <!-- 2025년 기준 안정 버전 -->
+        </dependency>
+
+        <!-- Spring Security Web -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>5.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
