@@ -1,13 +1,18 @@
 package unicore.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
+import unicore.interceptor.AuthInterceptor;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "unicore.controller")
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    private final AuthInterceptor authInterceptor;
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -17,15 +22,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/static/**")
+        registry.addResourceHandler("/static/**")
                 .addResourceLocations("/static/");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-       /* registry.addInterceptor(new AuthInterceptor())
-                .addPathPatterns("/**") // 모든 요청에 적용
-                .excludePathPatterns("/login", "/logout", "/static/**", "/error"); // 로그인 제외*/
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/**")  // 모든 요청에 적용
+                .excludePathPatterns("/login", "/logout", "/static/**", "/error"); // 로그인/정적 자원 제외
     }
 }
