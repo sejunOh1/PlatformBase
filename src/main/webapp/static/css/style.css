@@ -79,7 +79,7 @@ body {
 /* ========== 메인 콘텐츠 영역 ========== */
 .main-content {
     margin-left: 240px; /* 사이드바 너비만큼 밀어줌 */
-    padding: 2rem;
+    padding: 80px 2rem 2rem 2rem;
 }
 
 
@@ -265,4 +265,20 @@ body {
     margin-bottom: 20px;
     border-radius: 8px;
     font-size: 0.95em;
+}
+
+/* 사용자 정보 */
+.user-info {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #ecf0f1;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.username-highlight {
+    font-weight: bold;
+    color: #1abc9c;
+    font-size: 1.2rem;
 }
