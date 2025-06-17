@@ -8,7 +8,7 @@ import unicore.interceptor.AuthInterceptor;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "unicore.controller")
+@ComponentScan("unicore")
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
