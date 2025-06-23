@@ -21,7 +21,9 @@ public class RoleController {
     public String list(Model model) {
         List<Role> roles = roleService.getAll();
         model.addAttribute("roleList", roles);
-        return "rolemanage/rolemanage-list";  // -> /WEB-INF/views/role/list.jsp
+        model.addAttribute("contentPage", "rolemanage/rolemanage-list.jsp");
+        //return "rolemanage/rolemanage-list";  // -> /WEB-INF/views/role/list.jsp
+        return "layout";
     }
 
     // 권한 등록/수정 폼
