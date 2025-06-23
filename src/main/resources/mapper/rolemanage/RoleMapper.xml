@@ -35,7 +35,7 @@
 
     <!-- 권한 삭제 -->
     <delete id="delete" parameterType="long">
-        DELETE FROM roles
+        DELETE FROM COMMON.ROLES
         WHERE id = #{id}
     </delete>
 
