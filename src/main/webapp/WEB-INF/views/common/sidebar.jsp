@@ -25,6 +25,9 @@
       <li><a href="#">Component Test</a></li>
       <li><a href="#">API Console</a></li>
       <li><a href="#">Message Alert</a></li>
+       <li class="${fn:contains(currentUri, '/grid') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/grid/toastgrid">Grid</a>
+      </li>
     </ul>
   </nav>
 </aside>
