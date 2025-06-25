@@ -18,7 +18,7 @@ public class GridController {
         //List<ManageItem> items = manageService.getList();
         //model.addAttribute("items", items);
         model.addAttribute("contentPage", "/grid/toastgrid.jsp");
-        return "layout";
+        return "grid/toastgrid";
     }
 
 }
