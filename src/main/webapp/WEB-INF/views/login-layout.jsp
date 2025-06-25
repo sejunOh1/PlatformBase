@@ -4,15 +4,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>MyDash Layout</title>
+    <title>로그인</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/style.css">
 </head>
-<body>
-    <tiles:insertAttribute name="header" />
-    <tiles:insertAttribute name="sidebar" />
-
-    <main class="main-content">
-        <tiles:insertAttribute name="body" />
-    </main>
+<body class="login-layout">
+<main class="login-content">
+    <tiles:insertAttribute name="body"/>
+</main>
 </body>
 </html>

@@ -14,13 +14,13 @@
   <nav>
     <ul>
       <li class="${fn:contains(currentUri, '/dashboard') ? 'active' : ''}">
-        <a href="${pageContext.request.contextPath}/dashboard.do">Dashboard</a>
+        <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
       </li>
       <li class="${fn:contains(currentUri, '/manage') ? 'active' : ''}">
         <a href="${pageContext.request.contextPath}/manage/list">Manage</a>
       </li>
       <li class="${fn:contains(currentUri, '/rolemanage') ? 'active' : ''}">
-        <a href="${pageContext.request.contextPath}/rolemanage/rolemanage-list">Role Manage</a>
+        <a href="${pageContext.request.contextPath}/rolemanage/list">Role Manage</a>
       </li>
       <li><a href="#">Component Test</a></li>
       <li><a href="#">API Console</a></li>

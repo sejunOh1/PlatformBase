@@ -17,21 +17,20 @@ public class RoleController {
     private final RoleService roleService;
 
     // 권한 목록 조회
-    @GetMapping("/rolemanage-list")
+    @GetMapping("/list")
     public String list(Model model) {
         List<Role> roles = roleService.getAll();
         model.addAttribute("roleList", roles);
-        model.addAttribute("contentPage", "rolemanage/rolemanage-list.jsp");
-        //return "rolemanage/rolemanage-list";  // -> /WEB-INF/views/role/list.jsp
-        return "layout";
+
+        return "rolemanage/list";
     }
 
     // 권한 등록/수정 폼
-    @GetMapping("/rolemanage-form")
+    @GetMapping("/form")
     public String form(@RequestParam(required = false) Long id, Model model) {
         Role role = (id != null) ? roleService.getById(id) : new Role();
         model.addAttribute("role", role);
-        return "rolemanage/rolemanage-form";  // -> /WEB-INF/views/role/form.jsp
+        return "rolemanage/form";  // -> /WEB-INF/views/role/form.jsp
     }
 
     // 권한 저장

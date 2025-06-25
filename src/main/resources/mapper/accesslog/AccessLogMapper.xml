@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="unicore.accesslog.mapper.AccessLogMapper">
+
+    <insert id="insert" parameterType="unicore.accesslog.model.AccessLog">
+        INSERT INTO COMMON.access_log (
+            username, access_time, ip_address, user_agent,
+            request_uri, http_method, response_status, login_success
+        ) VALUES (
+             #{username}, #{accessTime}, #{ipAddress}, #{userAgent},
+             #{requestUri}, #{httpMethod}, #{responseStatus}, #{loginSuccess}
+        )
+    </insert>
+
+
+</mapper>
