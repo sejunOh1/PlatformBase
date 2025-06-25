@@ -5,14 +5,12 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Toast UI Grid</title>
-<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
-  <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-  <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+	  <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/tui/tui-pagination.js"></script>
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/tui/tui-pagination.css" />
+	  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/tui/tui-grid.css" />
+	  <script src="${pageContext.request.contextPath}/static/js/tui/tui-grid.js"></script>
 
-  <script type="text/javascript" src="https://uicdn.toast.com/tui-code-snippet/latest/tui-code-snippet.js"></script>
-  <script type="text/javascript" src="https://uicdn.toast.com/tui-pagination/latest/tui-pagination.js"></script>
-  <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+  <title>Toast UI Grid</title>
   
   <style>  /* 스타일 커스텀 적용 */
     .name-column {

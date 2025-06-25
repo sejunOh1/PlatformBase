@@ -28,6 +28,10 @@
        <li class="${fn:contains(currentUri, '/grid') ? 'active' : ''}">
         <a href="${pageContext.request.contextPath}/grid/toastgrid">Grid</a>
       </li>
+      <li class="${fn:contains(currentUri, '/chart') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/chart/chart">Chart</a>
+      </li>
+      
     </ul>
   </nav>
 </aside>
