@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import unicore.security.CustomUserDetailsService;
+import unicore.security.handler.CustomLoginSuccessHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ import unicore.security.CustomUserDetailsService;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -36,24 +38,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()   // CSRF 비활성화 (필요하다면 별도 토큰 처리)
-                .authorizeRequests()
-                // 로그인 페이지와 정적 리소스는 모두 허용
-                .antMatchers(
-                        "/login",
-                        "/static/**",    // CSS, JS, 이미지 등
-                        "/favicon.ico"
-                ).permitAll()
+            .csrf().disable()   // CSRF 비활성화 (필요하다면 별도 토큰 처리)
+            .authorizeRequests()
+            // 로그인 페이지와 정적 리소스는 모두 허용
+                .antMatchers("/login","/static/**","/favicon.ico").permitAll()
                 // 그 외 모든 요청은 인증된 사용자만 접근 가능
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
+            .and()
+            .formLogin()
                 .loginPage("/login")                 // 사용자 정의 로그인 폼
                 .loginProcessingUrl("/login")        // POST 처리 URL (기본값과 동일)
-                .defaultSuccessUrl("/dashboard.do", true)
+                //.defaultSuccessUrl("/dashboard", true)
+                .successHandler(customLoginSuccessHandler)
                 .permitAll()
-                .and()
-                .logout()
+            .and()
+            .logout()
                 .logoutUrl("/logout")                // POST /logout 처리
                 .logoutSuccessUrl("/login?logout")
                 .permitAll();

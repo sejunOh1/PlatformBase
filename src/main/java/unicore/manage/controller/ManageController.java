@@ -18,11 +18,8 @@ public class ManageController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        //List<ManageItem> items = manageService.getList();
-        //model.addAttribute("items", items);
-        model.addAttribute("contentPage", "/manage/manage.jsp");
-        //return "manage/manage";
-        return "layout";
+
+        return "manage/list";
     }
 
     @PostMapping("/save")
