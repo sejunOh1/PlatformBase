@@ -1,3 +1,95 @@
+<%-- <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E7E Ag-Grid 시작 예제</title>
+    <!-- 하는 김에 괘니 tailwindcss도 적용해 보깅 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+      .e7e {
+        @apply text-center text-3xl my-1 pb-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600;
+      }
+    </style>
+    <!-- tailwindcss 적용 끝, production mode에선 사용하지 말것-->
+    <!-- ag-grid 적용 -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+ 
+  <body>
+    <h1 class="e7e">테이블</h1>
+    <!-- 테마는 quartz, balham, material,alpine 있음 -->
+    <div id="e7eGrid" class="ag-theme-quartz-dark w-full h-100"></div>
+    <script type="module">
+      // 샘플 ROW 데이타 정의, DB Select의 1줄 Row들의 모임 list가 될거시당
+      const rowData = [
+        {
+          name: "경미닝",
+          birth: "2000-03-03",
+          nationality: "한국",
+          special: "기획",
+        },
+        {
+          name: "선주닝",
+          birth: "1999-09-09",
+          nationality: "한국",
+          special: "비동기",
+        },
+        {
+          name: "카리나",
+          birth: "2000-04-11",
+          nationality: "한국",
+          special: "리액트",
+        },
+        {
+          name: "지젤",
+          birth: "2000-10-30",
+          nationality: "일본",
+          special: "JSP",
+        },
+        {
+          name: "윈터",
+          birth: "2001-01-01",
+          nationality: "한국",
+          special: "바닐라JS",
+        },
+        {
+          name: "닝닝",
+          birth: "2002-10-23",
+          nationality: "중국",
+          special: "마이바티스",
+        },
+      ];
+ 
+      // 통합 설정 객체, 아주 많은 속성들이 제공됨(일단 몇개만)
+      const gridOptions = {
+        theme: "legacy",
+        rowData: rowData,
+        columnDefs: [
+          // 컬럼 정의
+          { field: "name", headerName: "이름" },
+          { field: "birth", headerName: "생일" },
+          { field: "nationality", headerName: "국적" },
+          { field: "special", headerName: "담당" },
+        ],
+        autoSizeStrategy: {
+          // 자동사이즈정책
+          type: "fitGridWidth", // 그리드넓이기준으로
+          defaultMinWidth: 150, // 컬럼 최소사이즈
+        },
+        rowHeight: 45, // row 높이지정
+      };
+ 
+      const gridDiv = document.querySelector("#e7eGrid");
+      const gridApi = agGrid.createGrid(gridDiv, gridOptions);
+    </script>
+  </body>
+</html> --%>
+
+
+
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -5,17 +97,60 @@
 
 <head>
   <meta charset="utf-8" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 	  <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/tui/tui-pagination.js"></script>
 	  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/tui/tui-pagination.css" />
 	  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/tui/tui-grid.css" />
 	  <script src="${pageContext.request.contextPath}/static/js/tui/tui-grid.js"></script>
-
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+	  
+	  <!-- toastr.js 토스트메세지  -->
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+	<!-- Notyf 토스트메세지 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+	  
+	  
+	  
   <title>Toast UI Grid</title>
   
   <style>  /* 스타일 커스텀 적용 */
+   .dragging-header {
+    opacity: 0.5;
+    background-color: #d3d3d3;
+    
+  	.tui-grid-header-area {
+	  height: 60px;  /* 기본보다 조금 더 높게 */
+	}
+
+  
     .name-column {
       background-color: #e6f7ff;
       color: #1207e6;           
+      font-weight: bold;
+      width: 200px;
+    }
+    
+    .tui-grid-btn-sorting {
+     transform: scale(1.5);        /* 크기 2배 확대 */
+	  transform-origin: center;   /* 중앙 기준 확대 */
+	  margin-left: 10px;    
+    }
+    
+    .tui-pagination .tui-page-btn {
+      background-color: #000000;
+      border: 1px solid #ccc;
+      color: white;
+      padding: 5px 10px;
+      margin: 2px;
+    }
+    
+    .tui-pagination .tui-is-selected {
+      background-color: #005577;
+      color: white;
       font-weight: bold;
     }
   </style>
@@ -27,6 +162,16 @@
 	</br>
 	테이블 헤더 고정 / 필드별 정렬 기능 / 클라이언트 페이징 / 자동 rownum / 테이블 x,y축 스크롤 활성화 / 스타일 커스텀 적용
 	</br>
+	 
+	 <!-- <button onclick="javascript:hideColumn('name')">이름 컬럼 토글</button>
+  	 <button onclick="javascript:showColumn('name')">나이 컬럼 토글</button> -->
+	 <button onclick="toastr.success('성공메세지');">toastr - success</button>
+	 <button onclick="toastr.info('인포메세지');">toastr - info</button>
+	 <button onclick="toastr.warning('워닝메세지');">toastr - warning</button>
+	 <button onclick="toastr.error('에러메세지');">toastr - error</button>
+	  <button onclick="showSuccess()">notyf - success</button>
+	  <button onclick="showError()">notyf - error</button>
+
 	<div id="grid"></div>
 
 
@@ -83,6 +228,9 @@ const grid = new tui.Grid({
       {
           header: 'Name',
           name: 'name',
+          width: 300,
+          minWidth: 200,
+          resizable: true,
           sortingType: 'desc',
           sortable: true,
           className: 'name-column' /* 컬럼 스타일 커스터마이징 */
@@ -124,9 +272,84 @@ const grid = new tui.Grid({
       }
    
   });
+	
+let draggedColumnName = null;
+let originalIndex = null;
+
+const headerCells = document.querySelectorAll('.tui-grid-header-area th[data-column-name]');
+headerCells.forEach(th => {
+  th.setAttribute('draggable', 'true');
+
+  // 드래그 시작
+  th.addEventListener('dragstart', e => {
+    draggedColumnName = th.dataset.columnName;
+    originalIndex = Array.from(headerCells).indexOf(th);
+    th.classList.add('dragging-header');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+
+  // 드래그 끝
+  th.addEventListener('dragend', () => {
+    draggedColumnName = null;
+    originalIndex = null;
+    headerCells.forEach(th => th.classList.remove('dragging-header'));
+  });
+
+  // 드롭 대상 위에 올렸을 때
+  th.addEventListener('dragover', e => {
+    e.preventDefault(); // drop 허용
+    e.dataTransfer.dropEffect = 'move';
+  });
+
+  // 드롭 시 처리
+  th.addEventListener('drop', e => {
+    e.preventDefault();
+    const targetColumnName = th.dataset.columnName;
+
+    if (draggedColumnName && draggedColumnName !== targetColumnName) {
+      const columns = grid.getColumns();
+
+      // 현재 컬럼 순서 → 드래그된 컬럼 이동
+      const draggedIndex = columns.findIndex(c => c.name === draggedColumnName);
+      const targetIndex = columns.findIndex(c => c.name === targetColumnName);
+
+      const newColumns = [...columns];
+      const [moved] = newColumns.splice(draggedIndex, 1); // 제거
+      newColumns.splice(targetIndex, 0, moved); // 새 위치 삽입
+
+      grid.setColumns(newColumns); // 재설정
+    }
+
+    draggedColumnName = null;
+    originalIndex = null;
+  });
 });
 
+});
+
+
+const notyf = new Notyf({
+    duration: 3000, // 메시지 지속 시간 (ms)
+    position: {
+      x: 'right',
+      y: 'bottom',
+    }
+  });
+
+  // 성공 메시지
+  function showSuccess() {
+    notyf.success('성공적으로 처리되었습니다!');
+  }
+
+  // 에러 메시지
+  function showError() {
+    notyf.error('오류가 발생했습니다.');
+  }
+  
+  
+  
 </script>
 
 </body>
 </html> 
+ 
