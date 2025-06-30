@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 public class GridController {
 
 
-    @GetMapping("/toastgrid")
+    @GetMapping("/grid")
     public String list(Model model) {
         //List<ManageItem> items = manageService.getList();
         //model.addAttribute("items", items);
-        model.addAttribute("contentPage", "/grid/toastgrid.jsp");
-        return "grid/toastgrid";
+        model.addAttribute("contentPage", "/grid/grid.jsp");
+        return "grid/grid";
     }
-
+    
 }

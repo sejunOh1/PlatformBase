@@ -1,3 +1,225 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AG Grid Demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Arial';
+    }
+    /* AG Grid 기본 컨테이너 */
+.ag-theme-alpine {
+  height: 600px;
+  width: 100%;
+  border: 1px solid #ccc; /* 외곽선 추가 */
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+}
+
+/* 셀 테두리 강조 */
+.ag-cell, .ag-header-cell {
+  border-right: 1px solid #ddd !important;
+  border-bottom: 1px solid #ddd !important;
+}
+
+/* 마지막 셀 오른쪽 테두리 없애기 방지 */
+.ag-row .ag-cell:last-child,
+.ag-header-row .ag-header-cell:last-child {
+  border-right: 1px solid #ddd !important;
+}
+
+/* 헤더 스타일 */
+.ag-header-cell-label {
+  font-weight: bold;
+  color: #333;
+}
+
+/* 마우스 hover 시 강조 */
+.ag-row-hover .ag-cell {
+  background-color: #f4f8ff !important;
+}
+
+/* 선택된 행 강조 */
+.ag-row-selected {
+  background-color: #d0e6ff !important;
+}
+
+/* 버튼 스타일 */
+.custom-button {
+  margin: 10px;
+  padding: 8px 16px;
+  background-color: #3a78c9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.custom-button:hover {
+  background-color: #2c5fa4;
+}
+
+  </style>
+</head>
+<body>
+<button onclick="onBtHide()">Hide Cols</button>
+<button onclick="onBtShow()">Show Cols</button>
+<button class="custom-button" onclick="showGridState()">현재 상태 보기</button>
+
+	<div id="columnToggles" style="margin: 10px 0;"></div>
+  <button class="custom-button" onclick="onExport()">CSV 다운로드</button>
+  <div id="myGrid" class="ag-theme-alpine"></div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  
+  <script>
+    const columnDefs = [
+      { field: "id", headerName: "ID", sortable: true, resizable: true , cellStyle: {
+          backgroundColor: "#fff8dc"  // light yellow (cornsilk)
+      }},
+      { field: "name", headerName: "이름", sortable: true, resizable: true },
+      { field: "age", headerName: "나이", sortable: true, resizable: true },
+      { field: "email", headerName: "이메일", sortable: true, resizable: true }
+    ];
+
+    // 전역 gridOptions
+    let gridApi = null;
+    let gridColumnApi = null;
+    
+   const gridOptions = {
+  columnDefs: columnDefs,
+  rowData: [],
+  defaultColDef: {
+    flex: 1,
+    minWidth: 120,
+    sortable: true,
+    resizable: true
+  },
+  pagination: true,
+  paginationPageSize: 10,
+  animateRows: true,
+  rowHeight: 30,
+  headerHeight: 50,
+  getRowId: params => params.data.id,
+  onGridReady: function(params){
+	  gridApi = params.api;
+	  createColumnToggles(columnDefs);
+
+	  console.log("gridApi : "+ gridApi);
+	  console.log("gridColumnApi : "+ gridColumnApi);
+	  
+	    $.ajax({
+	        url: "/grid/users",
+	        method: "POST",
+	        contentType: "application/json",
+	        data: JSON.stringify({
+	         /*  keyword: "사용자1",
+	          minAge: 25 */
+	        }),
+	        success: function (data) {
+	        	 gridApi.updateGridOptions({ rowData: data });
+	        },
+	        error: function (xhr, status, error) {
+	          console.error("데이터 요청 실패:", status, error);
+	        }
+	      });
+  }
+  
+
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  const eGridDiv = document.querySelector('#myGrid');
+  agGrid.createGrid(eGridDiv, gridOptions);
+  
+});
+
+
+    // CSV 내보내기
+   function onExport() {
+  if (gridApi) {
+    gridApi.exportDataAsCsv();
+  } else {
+    alert("그리드가 아직 초기화되지 않았습니다.");
+  }
+}
+
+   function onBtHide() {
+	     gridApi.setColumnsVisible(['age'], false);
+	 }
+   function onBtShow() {
+	     gridApi.setColumnsVisible(['age'], true);
+	 }
+   
+   function createColumnToggles(columnDefs) {
+	    const container = document.getElementById("columnToggles");
+	    container.innerHTML = '';
+
+	    columnDefs.forEach(col => {
+	      const wrapper = document.createElement("label");
+	      wrapper.style.marginRight = "12px";
+
+	      const checkbox = document.createElement("input");
+	      checkbox.type = "checkbox";
+	      checkbox.checked = true;
+	      checkbox.dataset.colId = col.field;
+
+	      checkbox.addEventListener("change", function () {
+	        const colId = this.dataset.colId;
+	        const visible = this.checked;
+	        if (gridApi) {
+	          gridApi.setColumnsVisible([colId], visible);
+	        }
+	      });
+
+	      wrapper.appendChild(checkbox);
+
+	      const label = document.createTextNode(col.headerName);
+	      wrapper.appendChild(label);
+
+	      container.appendChild(wrapper);
+	    });
+	  }
+   
+   function showGridState() {
+	   if (!gridApi) {
+	     alert("그리드가 아직 초기화되지 않았습니다.");
+	     return;
+	   }
+
+	   const columnState = gridApi.getColumnState(); // 컬럼 정보
+
+	   const result = columnState.map(c => ({
+	     컬럼ID: c.colId,
+	     숨김여부: c.hide ? "숨김" : "표시",
+	     너비: c.width + "px",
+	     순서: c.order !== undefined ? c.order : "-",
+	     정렬: c.sort || "정렬 안됨"
+	   }));
+
+	   console.table(result);
+
+	   // 간단한 Alert 메시지 출력
+	  
+	 }
+  </script>
+</body>
+</html>
+
+
+
+
+
 <%-- <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -89,7 +311,7 @@
 </html> --%>
 
 
-
+<%-- 
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -352,4 +574,4 @@ const notyf = new Notyf({
 
 </body>
 </html> 
- 
+  --%>

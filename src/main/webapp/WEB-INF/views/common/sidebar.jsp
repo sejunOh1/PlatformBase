@@ -26,7 +26,7 @@
       <li><a href="#">API Console</a></li>
       <li><a href="#">Message Alert</a></li>
        <li class="${fn:contains(currentUri, '/grid') ? 'active' : ''}">
-        <a href="${pageContext.request.contextPath}/grid/toastgrid">Grid</a>
+        <a href="${pageContext.request.contextPath}/grid/grid">Grid</a>
       </li>
       <li class="${fn:contains(currentUri, '/chart') ? 'active' : ''}">
         <a href="${pageContext.request.contextPath}/chart/chart">Chart</a>
