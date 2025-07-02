@@ -2,23 +2,28 @@ package unicore.dashboard.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import unicore.security.CustomUserDetails;
 
 @Controller
 public class DashboardController {
 
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping({"/", "/dashboard"})
-    public String dashboard(Authentication auth, Model model) {
-            logger.info("대시보드 접속 사용자: {}", auth.getName());
+    public String dashboard(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        logger.info("대시보드 접속 사용자: {}", user.getUserId());
 
-            model.addAttribute("username", auth.getName());
-            //model.addAttribute("contentPage", "user/dashboard.jsp"); // 본문 JSP 경로를 모델에 포함
-            return "user/dashboard";
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("deptName", user.getDeptName());
+        model.addAttribute("role", user.getRole());
+
+        return "user/dashboard";
     }
 
 }

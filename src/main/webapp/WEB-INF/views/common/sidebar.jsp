@@ -22,12 +22,18 @@
       <li class="${fn:contains(currentUri, '/rolemanage') ? 'active' : ''}">
         <a href="${pageContext.request.contextPath}/rolemanage/list">Role Manage</a>
       </li>
-      <li><a href="#">Component Test</a></li>
+      <li class="${fn:contains(currentUri, '/accesslog') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/accesslog/list">Access Log</a>
+      </li>
       <li><a href="#">API Console</a></li>
       <li><a href="#">Message Alert</a></li>
        <li class="${fn:contains(currentUri, '/grid') ? 'active' : ''}">
-        <a href="${pageContext.request.contextPath}/grid/toastgrid">Grid</a>
+        <a href="${pageContext.request.contextPath}/grid/grid">Grid</a>
       </li>
+      <li class="${fn:contains(currentUri, '/chart') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/chart/chart">Chart</a>
+      </li>
+      
     </ul>
   </nav>
 </aside>

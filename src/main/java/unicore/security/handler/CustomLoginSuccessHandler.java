@@ -1,5 +1,9 @@
 package unicore.security.handler;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -15,6 +19,7 @@ import java.sql.Timestamp;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AccessLogService accessLogService;
@@ -23,22 +28,20 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-
-        AccessLog log = AccessLog.builder()
+        AccessLog accessLog = AccessLog.builder()
                 .username(authentication.getName())
-                .accessTime(now)
+                .accessTime(new Timestamp(System.currentTimeMillis()))
                 .ipAddress(request.getRemoteAddr())
                 .userAgent(request.getHeader("User-Agent"))
-                .requestUri("/login")
+                .requestUri(request.getRequestURI())
                 .httpMethod("POST")
                 .responseStatus(200)
                 .loginSuccess("Y")
                 .build();
 
-        System.out.println("🧪 AccessLog = " + log);
+        accessLogService.save(accessLog);
 
-        accessLogService.save(log);  // → DB 저장
+        log.debug("AccessLog = {}", accessLog);
 
         super.onAuthenticationSuccess(request, response, authentication);  // 리다이렉트 처리
     }
