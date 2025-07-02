@@ -15,5 +15,20 @@
         )
     </insert>
 
+    <select id="findAll" resultType="unicore.accesslog.model.AccessLog">
+        SELECT
+            id,
+            username,
+            access_time AS accessTime,
+            ip_address AS ipAddress,
+            user_agent AS userAgent,
+            request_uri AS requestUri,
+            http_method AS httpMethod,
+            response_status AS responseStatus,
+            login_success AS loginSuccess
+        FROM COMMON.access_log
+        ORDER BY access_time DESC
+    </select>
+
 
 </mapper>

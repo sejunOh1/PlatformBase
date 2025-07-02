@@ -22,7 +22,9 @@
       <li class="${fn:contains(currentUri, '/rolemanage') ? 'active' : ''}">
         <a href="${pageContext.request.contextPath}/rolemanage/list">Role Manage</a>
       </li>
-      <li><a href="#">Component Test</a></li>
+      <li class="${fn:contains(currentUri, '/accesslog') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/accesslog/list">Access Log</a>
+      </li>
       <li><a href="#">API Console</a></li>
       <li><a href="#">Message Alert</a></li>
        <li class="${fn:contains(currentUri, '/grid') ? 'active' : ''}">

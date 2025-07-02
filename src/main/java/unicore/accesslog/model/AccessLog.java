@@ -1,11 +1,14 @@
 package unicore.accesslog.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AccessLog {
     private Long id;
@@ -16,5 +19,5 @@ public class AccessLog {
     private String requestUri;
     private String httpMethod;
     private int responseStatus;
-    private String loginSuccess;  // 성공: true, 실패: false
+    private String loginSuccess;
 }
